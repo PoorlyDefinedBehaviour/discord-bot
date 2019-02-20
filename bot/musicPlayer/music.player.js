@@ -122,6 +122,8 @@ class MusicPlayer {
         this.dbSongs = [];
       }
       this.musicHandler.end();
+    } else {
+      message.reply("No playlist is being played at the moment");
     }
   }
 

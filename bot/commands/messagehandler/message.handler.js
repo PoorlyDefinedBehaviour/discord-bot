@@ -90,10 +90,12 @@ class MessageHandler {
           [λ] DATABASE PLAYLIST COMMANDS\n\
           [!] /dbplay --- play songs from the database\n\
           [!] /dbadd --- add a song to the database\n\
+          [!] dbshowplaylist --- show database playlist\n\
           \n\
           [λ] LOCAL PLAYLIST COMMANDS\n\
           [!] /play --- starts the playlist\n\
           [!] /add --- adds a song to the playlist\n\
+          [!] /showplaylist --- lists the songs in the playlist\n\
           \n\
           [λ] GLOBAL COMMANDS\n\
           [!] /join --- brings bot to your channel\n\
@@ -101,8 +103,8 @@ class MessageHandler {
           [!] /volume --- changes the volume of the song\n\
           [!] /pause --- pauses the song\n\
           [!] /resume --- unpauses the song\n\
-          [!] /showplaylist --- lists the songs in the playlist\n\
-          [!] /clear --- removes every song from the playlist\n");
+          [!] /clear --- removes every song from the playlist\n\
+          [!] /stop --- stops the playlist");
         break;
 
       default:
