@@ -44,9 +44,12 @@ class MusicPlayer {
   setVolume(message, arg) {
     if (arg === undefined) {
       message.reply("You need to give me a volume between 0 and 1")
+    } else if (arg > 1) {
+      message.reply("You need to set a volume between 0 and 1");
     } else if (this.musicHandler === null) {
       message.reply("There's no song being played at the moment");
     }
+
     this.volume = arg < 1.0 ? arg : this.volume;
     this.musicHandler.setVolume(this.volume);
   }
@@ -116,7 +119,7 @@ class MusicPlayer {
         console.log("song ended");
         this.songs.shift();
         if (this.songs[0] !== undefined) {
-          playPlaylist();
+          this.playPlaylist();
         } else {
           this.message.reply("Playlist is empty");
           this.connection.disconnect();

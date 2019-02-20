@@ -1,4 +1,5 @@
 const MusicPlayer = require("../../musicPlayer/music.player");
+const DatabaseHandler = require("../../database/database.handler");
 
 class MessageHandler {
   constructor() {

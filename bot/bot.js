@@ -1,13 +1,3 @@
-/**
- * Send JSON on POST request with axios
- * const fakeData = [ { fake: 'data' } ];
-  const url = 'http://192.168.90.251:8764/common/dotLogController/sendLog';
-  axios.post(url, {
-  topic: 'topic',
-  logs: fakeData, // look ma, no JSON.stringify()!
-});
- */
-
 require("dotenv").config();
 
 const Discord = require('discord.js');
