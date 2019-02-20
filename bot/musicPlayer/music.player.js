@@ -161,6 +161,10 @@ class MusicPlayer {
           this.musicHandler = null;
         }
       });
+
+      this.musicHandler.on("error", error => {
+        console.log("error on musicHandler", error);
+      })
     }, 5000);
   }
 
