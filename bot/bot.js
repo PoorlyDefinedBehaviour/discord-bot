@@ -16,8 +16,6 @@ client.on('ready', () => {
   const generalChannel = client.channels.get("536255450719584268");
   generalChannel.send("SAVEIRO REBAIxADA");
 
-  generalChannel.send(greetingAttachment);
-
   console.log("TO LIVE");
 })
 

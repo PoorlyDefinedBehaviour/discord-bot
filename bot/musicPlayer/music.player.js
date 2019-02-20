@@ -76,7 +76,6 @@ class MusicPlayer {
 
   skip(message) {
     const currentPlaylist = this.playlist === "LOCAL" ? this.songs : this.dbSongs;
-    console.log("currentplaylist", currentPlaylist);
 
     if (currentPlaylist[1] === undefined) {
       message.reply("Can't skip there's no more songs in the playlist, maybe you're looking for /clear?");
@@ -95,6 +94,7 @@ class MusicPlayer {
   }
 
   clear(message) {
+    message.reply("I only work for the local playlist");
     if (!this.songs) {
       message.reply("Playlist is already empty. type /commands to see the available commands");
     } else {
@@ -114,7 +114,7 @@ class MusicPlayer {
       } else {
         this.dbSongs = [];
       }
-      musicHandler.end();
+      this.musicHandler.end();
     }
   }
 
@@ -148,6 +148,7 @@ class MusicPlayer {
           this.message.reply("Playlist is empty");
           this.connection.disconnect();
           this.isPlaying = false;
+          this.playlist = "NONE";
           this.musicHandler = null;
         }
       });
