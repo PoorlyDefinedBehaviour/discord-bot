@@ -84,12 +84,19 @@ class MusicPlayer {
     }
   }
 
-  showPlaylist(message) {
-    message.reply("I only work for songs you added to the local playlist");
+  dbShowPlaylist(message) {
     if (!this.songs) {
       message.reply("Playlist is empty, use /add to insert new songs");
     } else {
       this.songs.forEach(song => message.reply(song));
+    }
+  }
+
+  dbShowPlaylist(message) {
+    if (!this.dbSongs) {
+      message.reply("Database playlist is empty, use /dbplay to play songs from the database");
+    } else {
+      this.dbSongs.forEach(song => message.reply(song));
     }
   }
 

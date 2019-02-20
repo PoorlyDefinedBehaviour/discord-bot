@@ -81,6 +81,10 @@ class MessageHandler {
         }
         break;
 
+      case '/dbshowplaylist':
+        MusicPlayer.dbShowPlaylist(mesage);
+        break;
+
       case '/commands':
         message.reply("\n\
           [λ] DATABASE PLAYLIST COMMANDS\n\
