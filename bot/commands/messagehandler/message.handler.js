@@ -89,8 +89,8 @@ class MessageHandler {
         message.reply("\n\
           [λ] DATABASE PLAYLIST COMMANDS\n\
           [!] /dbplay --- play songs from the database\n\
-          [!] /dbadd --- add a song to the database\n\
-          [!] dbshowplaylist --- show database playlist\n\
+          [!] /dbadd --- adds a song to the database\n\
+          [!] /dbshowplaylist --- show database playlist\n\
           \n\
           [λ] LOCAL PLAYLIST COMMANDS\n\
           [!] /play --- starts the playlist\n\
