@@ -82,7 +82,7 @@ class MessageHandler {
         break;
 
       case '/dbshowplaylist':
-        MusicPlayer.dbShowPlaylist(mesage);
+        MusicPlayer.dbShowPlaylist(message);
         break;
 
       case '/commands':
