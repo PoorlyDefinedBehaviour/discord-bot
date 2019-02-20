@@ -1,15 +1,18 @@
 const ytdl = require("ytdl-core");
 const fs = require("fs");
 const Validator = require("../validation/url.validator");
+const DatabaseHandler = require("../database/database.handler");
 
 class MusicPlayer {
   constructor() {
     this.songs = [];
+    this.dbSongs = [];
     this.musicHandler = null;
     this.volume = 0.2;
     this.isPlaying = false;
     this.connection = null;
     this.message = null;
+    this.playlist = "NONE";
   }
 
   async play(message) {
@@ -25,7 +28,8 @@ class MusicPlayer {
           this.connection = connection;
           this.message = message;
           this.isPlaying = !this.isPlaying;
-          this.playPlaylist();
+          this.playlist = "LOCAL";
+          this.playPlaylist(this.songs);
         })
         .catch(console.log);
     }
@@ -71,7 +75,10 @@ class MusicPlayer {
   }
 
   skip(message) {
-    if (!this.songs[1]) {
+    const currentPlaylist = this.playlist === "LOCAL" ? this.songs : this.dbSongs;
+    console.log("currentplaylist", currentPlaylist);
+
+    if (currentPlaylist[1] === undefined) {
       message.reply("Can't skip there's no more songs in the playlist, maybe you're looking for /clear?");
     } else {
       this.musicHandler.end();
@@ -79,6 +86,7 @@ class MusicPlayer {
   }
 
   showPlaylist(message) {
+    message.reply("I only work for songs you added to the local playlist");
     if (!this.songs) {
       message.reply("Playlist is empty, use /add to insert new songs");
     } else {
@@ -98,36 +106,76 @@ class MusicPlayer {
     }
   }
 
-  playPlaylist() {
-    console.log("this.songs", this.songs);
+  stop(message) {
+    if (this.isPlaying) {
+      this.isPlaying = false;
+      if (this.playlist === "LOCAL") {
+        this.songs = [];
+      } else {
+        this.dbSongs = [];
+      }
+      musicHandler.end();
+    }
+  }
 
-    ytdl([this.songs].toString(), { filter: "audioonly" })
+  async playPlaylist(songs) {
+
+    ytdl(songs[0], { filter: "audioonly" })
       .pipe(fs.createWriteStream("./bot/musicPlayer/song.mp3"))
       .on("error", error => {
         console.log(error);
       })
 
     const dirname = __dirname.replace(/\\/g, "/");
-    console.log("dirname", dirname);
 
     setTimeout(async () => {
+      const { title } = await ytdl.getInfo(songs[0]);
+      this.message.channel.send(
+
+        "```CSS\n" + `λ Playing: ${title}` + "```"
+
+      );
       this.musicHandler = await this.connection.playFile(`${dirname}/song.mp3`);
 
       this.musicHandler.setVolume(this.volume)
       this.musicHandler.on("end", () => {
 
         console.log("song ended");
-        this.songs.shift();
-        if (this.songs[0] !== undefined) {
-          this.playPlaylist();
+        songs.shift();
+        if (songs[0] !== undefined) {
+          this.playPlaylist(songs);
         } else {
           this.message.reply("Playlist is empty");
           this.connection.disconnect();
           this.isPlaying = false;
-          this.musicHandler = undefined;
+          this.musicHandler = null;
         }
       });
     }, 5000);
+  }
+
+  async playFromDatabase(message, data) {
+    if (this.isPlaying) {
+      message.reply("A playlist is already being played");
+      return;
+    }
+
+    this.dbSongs = data.data.map(object => object.url);
+
+    if (!this.dbSongs) {
+      message.reply("The databse is empty");
+      return;
+    }
+
+    await message.member.voiceChannel.join()
+      .then(connection => {
+        this.connection = connection;
+        this.message = message;
+        this.isPlaying = !this.isPlaying;
+        this.playlist = "DATABASE";
+        this.playPlaylist(this.dbSongs);
+      })
+      .catch(console.log);
   }
 }
 

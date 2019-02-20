@@ -1,32 +1,42 @@
-/**
- * Send JSON on POST request with axios
- * const fakeData = [ { fake: 'data' } ];
-  const url = 'http://192.168.90.251:8764/common/dotLogController/sendLog';
-  axios.post(url, {
-  topic: 'topic',
-  logs: fakeData, // look ma, no JSON.stringify()!
-});
- */
-
 require("dotenv").config();
 const axios = require("axios");
 
 class DatabaseHandler {
-  static create(document) {
-    return axios.post(process.env.CREATE_ROUTE, document);
+  constructor() {
+    this.dbSongs = [];
+    this.setDbSongs();
+    setInterval(() => {
+      this.setDbSongs()
+    }, 120000);
   }
 
-  static read(id) {
-    return axios.get(process.env.READ_ROUTE, id);
+  async setDbSongs() {
+    const data = await this.read();
+    this.dbSongs = data.data.map(object => object.url);
   }
 
-  static update(id, data) {
+  async create(document) {
+
+    if (this.dbSongs.includes(document.url)) {
+      return `${document.title} is already in the database!`;
+    }
+    await axios.post(process.env.CREATE_ROUTE, document);
+    this.dbSongs.push(document.url);
+    return `${document.title} added to the database`;
+  }
+
+  read(id) {
+    const _id = id || {};
+    return axios.get(process.env.READ_ROUTE);
+  }
+
+  update(id, data) {
     return axios.patch(`${process.env.UPDATE_ROUTE}${id}`, data);
   }
 
-  static delete(id) {
-    return axios.delete(process.env.DELETE_ROUTE, id);
+  delete(id) {
+    return axios.delete(`${process.env.DELETE_ROUTE}${id}`);
   }
 }
 
-module.exports = DatabaseHandler;
+module.exports = new DatabaseHandler();

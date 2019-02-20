@@ -1,5 +1,6 @@
 const MusicPlayer = require("../../musicPlayer/music.player");
 const DatabaseHandler = require("../../database/database.handler");
+const GetVideoInfo = require("../../validation/getVideoInfo");
 
 class MessageHandler {
   constructor() {
@@ -52,11 +53,46 @@ class MessageHandler {
         MusicPlayer.clear(message);
         break;
 
+      case '/stop':
+        MusicPlayer.stop(message);
+        break;
+
+      case '/dbplay':
+        {
+          const result = await DatabaseHandler.read(arg);
+          MusicPlayer.playFromDatabase(message, result);
+        }
+        break;
+
+      case '/dbadd':
+        {
+          const _title = await GetVideoInfo.getInfo(arg);
+
+          if (!_title) {
+            message.reply("Invalid url");
+          } else {
+            const result = await DatabaseHandler.create({
+              title: _title,
+              url: arg
+            }).catch(console.log)
+
+            message.reply(result);
+          }
+        }
+        break;
+
       case '/commands':
         message.reply("\n\
-          [!] /add --- adds a song to the playlist\n\
-          [!] /join --- brings bot to your channel\n\
+          [λ] DATABASE PLAYLIST COMMANDS\n\
+          [!] /dbplay --- play songs from the database\n\
+          [!] /dbadd --- add a song to the database\n\
+          \n\
+          [λ] LOCAL PLAYLIST COMMANDS\n\
           [!] /play --- starts the playlist\n\
+          [!] /add --- adds a song to the playlist\n\
+          \n\
+          [λ] GLOBAL COMMANDS\n\
+          [!] /join --- brings bot to your channel\n\
           [!] /skip --- skips the current song\n\
           [!] /volume --- changes the volume of the song\n\
           [!] /pause --- pauses the song\n\
@@ -72,7 +108,6 @@ class MessageHandler {
         break;
     }
   }
-
 }
 
 module.exports = new MessageHandler();
