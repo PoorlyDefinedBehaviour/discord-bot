@@ -149,7 +149,8 @@ class MusicPlayer {
       this.musicHandler.setVolume(this.volume)
       this.musicHandler.on("end", () => {
         if (!this.isPlaying)
-          return;
+          this.connection.disconnect();
+        return;
 
         console.log("song ended");
         songs.shift();
