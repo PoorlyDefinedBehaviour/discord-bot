@@ -17,7 +17,7 @@ class MusicPlayer {
 
   async play(message) {
     if (this.isPlaying) {
-      message.reply("Playlist is already being played!");
+      message.reply("A playlist is already being played, use /stop to stop it!");
     } else if (!this.songs) {
       message.reply("Playlist is empty!")
     } else if (!message.member.voiceChannel) {
@@ -89,14 +89,6 @@ class MusicPlayer {
       message.reply("Playlist is empty, use /add to insert new songs");
     } else {
       this.songs.forEach(song => message.reply(song));
-    }
-  }
-
-  dbShowPlaylist(message) {
-    if (!this.dbSongs) {
-      message.reply("Database playlist is empty, use /dbplay to play songs from the database");
-    } else {
-      this.dbSongs.forEach(song => message.reply(song));
     }
   }
 
@@ -185,7 +177,7 @@ class MusicPlayer {
       .then(connection => {
         this.connection = connection;
         this.message = message;
-        this.isPlaying = !this.isPlaying;
+        this.isPlaying = true;
         this.playlist = "DATABASE";
         this.playPlaylist(this.dbSongs);
       })
