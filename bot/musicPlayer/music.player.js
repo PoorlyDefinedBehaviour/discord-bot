@@ -83,7 +83,8 @@ class MusicPlayer {
       const amount = arg || 0;
       if (amount) {
         if (amount > currentPlaylist.length) {
-          message.reply(`The playlist has ${currentPlaylist.length}`);
+          message.reply(`Can't skip that many, the playlist has ${currentPlaylist.length}`);
+          return;
         }
         if (currentPlaylist === this.songs) {
           this.songs.splice(0, amount);
