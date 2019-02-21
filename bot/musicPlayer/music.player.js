@@ -114,6 +114,7 @@ class MusicPlayer {
 
   stop(message) {
     if (this.isPlaying) {
+      this.playlist = "NONE";
       this.isPlaying = false;
       if (this.playlist === "LOCAL") {
         this.songs = [];
