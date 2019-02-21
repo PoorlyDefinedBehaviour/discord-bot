@@ -74,12 +74,23 @@ class MusicPlayer {
     }
   }
 
-  skip(message) {
+  skip(message, arg) {
     const currentPlaylist = this.playlist === "LOCAL" ? this.songs : this.dbSongs;
 
     if (currentPlaylist[1] === undefined) {
       message.reply("Can't skip there's no more songs in the playlist, maybe you're looking for /clear or /stop");
     } else {
+      const amount = arg || 0;
+      if (amount) {
+        if (amount > currentPlaylist.length) {
+          message.reply(`The playlist has ${currentPlaylist.length}`);
+        }
+        if (currentPlaylist === this.songs) {
+          this.songs.splice(0, amount);
+        } else {
+          this.dbSongs.splice(0, amount);
+        }
+      }
       this.musicHandler.end();
     }
   }
@@ -93,7 +104,7 @@ class MusicPlayer {
   }
 
   dbShowPlaylist(message) {
-    if (!this.dbSongs) {
+    if (this.dbSongs.length < 1) {
       message.reply("The database playlist is empty, use /dbplay to fill the playlist with songs from the database");
     } else {
       this.dbSongs.forEach(song => message.reply(song));

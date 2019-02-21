@@ -16,7 +16,7 @@ class MessageHandler {
 
         if (message.member.voiceChannel) {
           await message.member.voiceChannel.join();
-          const index = Math.floor(Math.random() * greetings.length);
+          const index = Math.floor(Math.random() * this.greetings.length);
           message.reply(this.greetings[index]);
         }
         break;
@@ -42,7 +42,7 @@ class MessageHandler {
         break;
 
       case '/skip':
-        MusicPlayer.skip(message);
+        MusicPlayer.skip(message, arg);
         break;
 
       case '/showplaylist':
