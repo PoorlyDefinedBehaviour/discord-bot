@@ -99,8 +99,7 @@ class MessageHandler {
           [!] /volume --- changes the volume of the song\n\
           [!] /pause --- pauses the song\n\
           [!] /resume --- unpauses the song\n\
-          [!] /clear --- removes every song from the playlist\n\
-          [!] /stop --- stops the playlist");
+          [!] /stop --- stops the playlist that's being played");
         break;
 
       default:
