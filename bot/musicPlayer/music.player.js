@@ -97,7 +97,7 @@ class MusicPlayer {
   }
 
   showPlaylist(message) {
-    if (!this.songs) {
+    if (this.songs.length < 1) {
       message.reply("The local playlist is empty, use /add to add songs to the local playlist");
     } else {
       this.songs.forEach(song => message.reply(song));
@@ -148,6 +148,8 @@ class MusicPlayer {
 
       this.musicHandler.setVolume(this.volume)
       this.musicHandler.on("end", () => {
+        if (!this.isPlaying)
+          return;
 
         console.log("song ended");
         songs.shift();

@@ -82,7 +82,7 @@ class MessageHandler {
         break;
 
       case '/commands':
-        message.reply("\n\
+        message.reply("```\n\
           [λ] DATABASE PLAYLIST COMMANDS\n\
           [!] /dbplay --- play songs from the database\n\
           [!] /dbadd --- adds a song to the database\n\
@@ -99,7 +99,7 @@ class MessageHandler {
           [!] /volume --- changes the volume of the song\n\
           [!] /pause --- pauses the song\n\
           [!] /resume --- unpauses the song\n\
-          [!] /stop --- stops the playlist that's being played");
+          [!] /stop --- stops the playlist that's being played```");
         break;
 
       default:
