@@ -78,30 +78,25 @@ class MusicPlayer {
     const currentPlaylist = this.playlist === "LOCAL" ? this.songs : this.dbSongs;
 
     if (currentPlaylist[1] === undefined) {
-      message.reply("Can't skip there's no more songs in the playlist, maybe you're looking for /clear?");
+      message.reply("Can't skip there's no more songs in the playlist, maybe you're looking for /clear or /stop");
     } else {
       this.musicHandler.end();
     }
   }
 
-  dbShowPlaylist(message) {
+  showPlaylist(message) {
     if (!this.songs) {
-      message.reply("Playlist is empty, use /add to insert new songs");
+      message.reply("The local playlist is empty, use /add to add songs to the local playlist");
     } else {
       this.songs.forEach(song => message.reply(song));
     }
   }
 
-  clear(message) {
-    message.reply("I only work for the local playlist");
-    if (!this.songs) {
-      message.reply("Playlist is already empty. type /commands to see the available commands");
+  dbShowPlaylist(message) {
+    if (!this.dbSongs) {
+      message.reply("The database playlist is empty, use /dbplay to fill the playlist with songs from the database");
     } else {
-      this.songs = [];
-      message.reply("Removed all songs from the playlist");
-      this.isPlaying = false;
-      this.musicHandler.end();
-      this.musicHandler = null;
+      this.dbSongs.forEach(song => message.reply(song));
     }
   }
 

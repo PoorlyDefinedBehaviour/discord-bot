@@ -49,10 +49,6 @@ class MessageHandler {
         MusicPlayer.showPlaylist(message);
         break;
 
-      case '/clear':
-        MusicPlayer.clear(message);
-        break;
-
       case '/stop':
         MusicPlayer.stop(message);
         break;
